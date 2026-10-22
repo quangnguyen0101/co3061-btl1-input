@@ -44,7 +44,8 @@ class StarBattle:
 
 @dataclass(frozen=True)
 class LightUp:
-    size: int
+    rows: int
+    cols: int
     grid: tuple[str, ...]
 
     def is_black(self, r: int, c: int) -> bool:
@@ -55,7 +56,7 @@ class LightUp:
         return int(ch) if ch.isdigit() else None
 
     def is_cell(self, r: int, c: int) -> bool:
-        return 0 <= r < self.size and 0 <= c < self.size
+        return 0 <= r < self.rows and 0 <= c < self.cols
 
 
 def _sections(path: Path) -> dict[str, list[str]]:
@@ -69,8 +70,8 @@ def _sections(path: Path) -> dict[str, list[str]]:
         if len(head) == 1 and head[0].isalpha():
             key = head[0]
             out[key] = []
-        elif len(head) == 2 and head[0] == "size":
-            out["size"] = [head[1]]
+        elif 2 <= len(head) <= 3 and head[0] == "size":
+            out["size"] = head[1:]
         elif len(head) == 2 and head[0] == "stars":
             out["stars"] = [head[1]]
         elif key is None:
@@ -92,18 +93,28 @@ def _int(sections: dict[str, list[str]], key: str, path: Path) -> int:
 def load(path: str | Path) -> StarBattle | LightUp:
     path = Path(path)
     sections = _sections(path)
-    size = _int(sections, "size", path)
+    if "size" not in sections:
+        raise ParseError(f"{path}: thieu dong 'size'")
+    try:
+        dims = [int(v) for v in sections["size"]]
+    except ValueError:
+        raise ParseError(f"{path}: 'size' phai la so nguyen") from None
+    size = dims[0]
+    cols = dims[1] if len(dims) > 1 else dims[0]
 
     if "grid" in sections:
         rows = sections["grid"]
         if len(rows) != size:
             raise ParseError(f"{path}: can {size} dong grid, co {len(rows)}")
         for i, row in enumerate(rows):
-            if len(row) != size:
-                raise ParseError(f"{path}: dong grid {i + 1} phai dai {size}")
+            if len(row) != cols:
+                raise ParseError(f"{path}: dong grid {i + 1} phai dai {cols}")
             if any(ch not in ".#0123456789" for ch in row):
                 raise ParseError(f"{path}: dong grid {i + 1} co ky tu la")
-        return LightUp(size=size, grid=tuple(rows))
+        return LightUp(rows=size, cols=cols, grid=tuple(rows))
+
+    if cols != size:
+        raise ParseError(f"{path}: Star Battle phai la luoi vuong")
 
     stars = _int(sections, "stars", path)
     if "regions" in sections:
@@ -223,8 +234,8 @@ def check_light_up(p: LightUp, bulbs) -> list[str]:
                 if p.is_black(rr, cc):
                     break
 
-    for r in range(p.size):
-        for c in range(p.size):
+    for r in range(p.rows):
+        for c in range(p.cols):
             clue = p.clue(r, c)
             if clue is None:
                 continue
@@ -242,8 +253,8 @@ def check_light_up(p: LightUp, bulbs) -> list[str]:
                     break
                 lit.add((rr, cc))
 
-    for r in range(p.size):
-        for c in range(p.size):
+    for r in range(p.rows):
+        for c in range(p.cols):
             if not p.is_black(r, c) and (r, c) not in lit:
                 errors.append(f"o trang ({r + 1},{c + 1}) chua duoc chieu sang")
 

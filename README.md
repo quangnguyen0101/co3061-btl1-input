@@ -4,8 +4,8 @@
 Viec-1/
 ├── core.py                    # nạp đề + kiểm lời giải + registry thuật toán
 ├── inputs/
-│   ├── star_battle/           # sb-*.txt
-│   └── light_up/              # lu-*.txt
+│   ├── star_battle/           # 21 file sb-*.txt
+│   └── light_up/              # 23 file lu-*.txt
 └── README.md
 ```
 
@@ -28,11 +28,13 @@ Yêu cầu: **Python 3.10+** (dùng `X | None`), không cài thêm thư viện.
 | Phần | Giá trị | Ví dụ |
 |---|---|---|
 | tiền tố | `sb` = Star Battle · `lu` = Light Up | `sb` |
-| `cạnh` | `5x5`, `6x6`, `7x7`, `8x8`, `10x10`, `14x14` | `10x10` |
-| `loại` | `easy` · `normal` · `hard` · `shapeless` | `normal` |
+| `cạnh` | `5x5` … `14x14`, và `17x17`, `21x21`, `25x25`, `30x30`, `30x40`, `40x50` | `10x10` |
+| `loại` | `easy` · `normal` · `hard` · `shapeless` · `daily` · `weekly` · `monthly` | `normal` |
 | `số` | `01`, `02`, … đánh từ 1; `sample` cho đề mẫu | `02` |
 
-Ví dụ: `star_battle/sb-10x10-normal-01.txt`, `light_up/lu-14x14-hard-02.txt`, `star_battle/sb-6x6-shapeless-sample.txt`.
+Ví dụ: `star_battle/sb-10x10-normal-01.txt`, `light_up/lu-14x14-hard-02.txt`, `star_battle/sb-6x6-shapeless-sample.txt`, `light_up/lu-40x50-monthly-01.txt`.
+
+Với lưới chữ nhật, `cạnh` ghi **cột × dòng** (như site): `lu-30x40-weekly-01.txt` là 30 cột, 40 dòng.
 
 Số sao **không** ghi vào tên — suy ra từ cỡ (5×5/6×6/8×8 → 1★, 10×10 → 2★, 14×14 → 3★).
 
@@ -87,6 +89,8 @@ grid
 
 `.` ô trắng · `#` ô đen không số · `0`–`4` ô đen có số.
 
+Lưới không nhất thiết vuông: dòng `size` nhận 1 số (vuông) hoặc 2 số **số dòng rồi số cột**.
+
 Không có chú thích trong file — `#` là ô đen nên không dùng làm ký hiệu comment được.
 
 ## 2. Định dạng lời giải
@@ -125,7 +129,7 @@ Trả về:
 Thuộc tính hữu ích:
 
 - `StarBattle`: `size`, `stars`, `regions`, `walls`, `shapeless`, `region_count`, `is_cell(r, c)`, `cells()`
-- `LightUp`: `size`, `grid`, `is_black(r, c)`, `clue(r, c)` (trả `None` nếu không phải ô số)
+- `LightUp`: `rows`, `cols`, `grid`, `is_black(r, c)`, `clue(r, c)` (trả `None` nếu không phải ô số)
 
 ## 4. Thêm thuật toán
 
@@ -166,6 +170,21 @@ Toàn bộ lấy từ trang chính thức, mỗi dòng là `?size=<n>` trên sit
 
 Site không có bản Star Battle Easy, nên cột đó để trống.
 
+### Bộ đặc biệt
+
+Ba bộ này **đổi đề theo ngày/tuần/tháng**, nên file dưới đây chỉ là bản chụp ngày **22/10/2026** — muốn tái lập số liệu thì dùng đúng file này, đừng lấy lại từ site.
+
+| Bài | File | Cỡ | Số sao |
+|---|---|---|---|
+| Star Battle | `sb-17x17-daily-01.txt` | 17×17 | 4★ |
+| Star Battle | `sb-21x21-weekly-01.txt` | 21×21 | 5★ |
+| Star Battle | `sb-25x25-monthly-01.txt` | 25×25 | 6★ |
+| Light Up | `lu-30x30-daily-01.txt` | 30×30 | — |
+| Light Up | `lu-30x40-weekly-01.txt` | 30 cột × 40 dòng | — |
+| Light Up | `lu-40x50-monthly-01.txt` | 40 cột × 50 dòng | — |
+
+Nguồn: Star Battle `?size=9/10/11`, Light Up `?size=13/12/14`.
+
 Nguồn (tham số `size` của site):
 
 | Bài | easy | normal | hard |
@@ -179,8 +198,9 @@ Nguồn (tham số `size` của site):
 - [x] Định dạng input thống nhất cho cả 2 bài, kể cả Shapeless
 - [x] Hợp đồng `core.register` / `core.solve` cho 4 thuật toán
 - [x] Quy ước đặt tên thống nhất (mục 0)
-- [x] 36 đề chính thức, phủ easy/normal/hard
+- [x] 36 đề chính thức (easy/normal/hard) + 6 đề đặc biệt daily/weekly/monthly
 - [ ] Shapeless 8×8 và 10×10 nếu báo cáo cần
+- [ ] 25×25 Light Up: site chỉ có bản đặc biệt (30×30 trở lên), không có 25×25
 
 > [!warning] Phát hành input là chốt hạ
 > V2 và V3 phải chạy **đúng bộ file này**. Thêm/bớt/đổi tên file sau 22/10 là cả hai phải chạy lại từ đầu.
