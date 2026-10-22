@@ -6,6 +6,8 @@ Viec-1/
 ├── inputs/
 │   ├── star_battle/           # 25 file sb-*.txt
 │   └── light_up/              # 23 file lu-*.txt
+├── figs/                      # 45 ảnh vẽ sẵn (viz.py)
+├── Mo-hinh-hoa.md             # trạng thái / khởi đầu / mục tiêu / luật đi cho 2 bài
 └── README.md
 ```
 
@@ -147,6 +149,8 @@ Star Battle tô màu từng vùng; bản Shapeless tô ô tường đen. Light U
 Ảnh đã vẽ sẵn cho **cả 45 đề** nằm trong `figs/` (tên trùng tên file input). Đổi đề thì chạy lại `python3 viz.py inputs/<bài> -o figs`.
 
 ## 4. Thêm thuật toán
+
+Mô hình hoá đầy đủ (trạng thái, khởi đầu, mục tiêu, luật di chuyển hợp lệ) ở [`Mo-hinh-hoa.md`](Mo-hinh-hoa.md) — đọc trước khi viết hàm sinh trạng thái con.
 
 ```python
 import core
