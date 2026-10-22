@@ -144,6 +144,8 @@ python3 viz.py inputs/light_up -o hinh.svg                  # SVG/PDF cũng đư
 
 Star Battle tô màu từng vùng; bản Shapeless tô ô tường đen. Light Up tô ô đen, in số gợi ý màu trắng, bóng đèn màu vàng.
 
+Ảnh đã vẽ sẵn cho **cả 45 đề** nằm trong `figs/` (tên trùng tên file input). Đổi đề thì chạy lại `python3 viz.py inputs/<bài> -o figs`.
+
 ## 4. Thêm thuật toán
 
 ```python
