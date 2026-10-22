@@ -1,7 +1,5 @@
 # Mô hình hoá — Star Battle & Light Up
 
-Bốn câu hỏi của đề, trả lời cho cả hai bài: **trạng thái tổng quát**, **trạng thái khởi đầu**, **trạng thái mục tiêu**, **luật di chuyển hợp lệ**.
-
 Cả hai bài đều là bài toán *gán dần* (incremental assignment): trạng thái chỉ lớn thêm, không bao giờ bỏ bớt một quân/bóng đã đặt. Nhờ vậy một trạng thái chỉ cần ghi **tập ô đã đặt**; mọi con số đếm khác đều suy ra được.
 
 Ký hiệu chung: $V$ là tập ô của bàn cờ, $n$ là cạnh (Star Battle luôn vuông), $k$ là số sao mỗi hàng.
