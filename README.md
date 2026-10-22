@@ -4,7 +4,7 @@
 Viec-1/
 ├── core.py                    # nạp đề + kiểm lời giải + registry thuật toán
 ├── inputs/
-│   ├── star_battle/           # 21 file sb-*.txt
+│   ├── star_battle/           # 25 file sb-*.txt
 │   └── light_up/              # 23 file lu-*.txt
 └── README.md
 ```
