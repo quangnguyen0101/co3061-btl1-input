@@ -1,0 +1,9 @@
+size 6
+stars 1
+walls
+. X . . . .
+X . . . . .
+. X X . . .
+X X X X X .
+. . . . . .
+. X . . . .
