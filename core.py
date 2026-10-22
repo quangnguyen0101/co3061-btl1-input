@@ -280,9 +280,9 @@ def solve(problem: StarBattle | LightUp, algo: str, **kwargs):
 if __name__ == "__main__":
     root = Path(__file__).parent
     pairs = [
-        ("inputs/sb-5x5-normal-sample.txt", "inputs/sb-5x5-normal-sample.sol.txt"),
-        ("inputs/sb-6x6-shapeless-sample.txt", "inputs/sb-6x6-shapeless-sample.sol.txt"),
-        ("inputs/lu-7x7-normal-sample.txt", "inputs/lu-7x7-normal-sample.sol.txt"),
+        ("inputs/star_battle/sb-5x5-normal-sample.txt", "inputs/star_battle/sb-5x5-normal-sample.sol.txt"),
+        ("inputs/star_battle/sb-6x6-shapeless-sample.txt", "inputs/star_battle/sb-6x6-shapeless-sample.sol.txt"),
+        ("inputs/light_up/lu-7x7-normal-sample.txt", "inputs/light_up/lu-7x7-normal-sample.sol.txt"),
     ]
     for inp, sol in pairs:
         problem = load(root / inp)

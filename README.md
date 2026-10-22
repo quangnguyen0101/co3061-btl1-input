@@ -1,11 +1,11 @@
 # Việc 1 — Input & thiết lập bài toán
 
-Người nhận: **Nguyễn Đức Tiến** (hạn 22/10). Folder này là phần dùng chung: nạp đề, kiểm tra lời giải, đăng ký thuật toán.
-
 ```
 Viec-1/
-├── core.py        # nạp đề + kiểm lời giải + registry thuật toán
-├── inputs/        # 36 đề chính thức + 3 đề mẫu (kèm lời giải)
+├── core.py                    # nạp đề + kiểm lời giải + registry thuật toán
+├── inputs/
+│   ├── star_battle/           # sb-*.txt
+│   └── light_up/              # lu-*.txt
 └── README.md
 ```
 
@@ -32,7 +32,7 @@ Yêu cầu: **Python 3.10+** (dùng `X | None`), không cài thêm thư viện.
 | `loại` | `easy` · `normal` · `hard` · `shapeless` | `normal` |
 | `số` | `01`, `02`, … đánh từ 1; `sample` cho đề mẫu | `02` |
 
-Ví dụ: `sb-10x10-normal-01.txt`, `lu-14x14-hard-02.txt`, `sb-6x6-shapeless-sample.txt`.
+Ví dụ: `star_battle/sb-10x10-normal-01.txt`, `light_up/lu-14x14-hard-02.txt`, `star_battle/sb-6x6-shapeless-sample.txt`.
 
 Số sao **không** ghi vào tên — suy ra từ cỡ (5×5/6×6/8×8 → 1★, 10×10 → 2★, 14×14 → 3★).
 
@@ -109,7 +109,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Viec-1"))
 import core
 
-problem = core.load("Viec-1/inputs/lu-7x7-normal-01.txt")
+problem = core.load("Viec-1/inputs/light_up/lu-7x7-normal-01.txt")
 print(type(problem).__name__)        # LightUp
 print(core.check(problem, nuggets))   # [] nghĩa là lời giải hợp lệ
 ```
