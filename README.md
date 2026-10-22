@@ -4,10 +4,8 @@ Người nhận: **Nguyễn Đức Tiến** (hạn 22/10). Folder này là phầ
 
 ```
 Viec-1/
-├── core.py                       # nạp đề + kiểm lời giải + registry thuật toán
-├── inputs/
-│   ├── star_battle/              # 5x5, 6x6, 8x8, 10x10 + 1 bản shapeless mẫu
-│   └── light_up/                 # 7x7, 10x10, 14x14
+├── core.py        # nạp đề + kiểm lời giải + registry thuật toán
+├── inputs/        # 36 đề chính thức + 3 đề mẫu (kèm lời giải)
 └── README.md
 ```
 
@@ -15,7 +13,7 @@ Chạy tự kiểm:
 
 ```bash
 cd Viec-1
-python3 core.py      # đọc 3 puzzle mẫu, kiểm lời giải, in OK
+python3 core.py      # đọc 3 đề mẫu, kiểm lời giải, in OK
 ```
 
 Yêu cầu: **Python 3.10+** (dùng `X | None`), không cài thêm thư viện.
@@ -23,17 +21,18 @@ Yêu cầu: **Python 3.10+** (dùng `X | None`), không cài thêm thư viện.
 ## 0. Quy ước đặt tên — dùng chung cho cả 2 bài
 
 ```
-<cạnh>-<loại>-<số>.txt
-<cạnh>-<loại>-<số>.sol.txt     # chỉ file mẫu mới có lời giải kèm theo
+<sb|lu>-<cạnh>-<loại>-<số>.txt
+<sb|lu>-<cạnh>-<loại>-<số>.sol.txt     # chỉ đề mẫu mới có lời giải kèm theo
 ```
 
 | Phần | Giá trị | Ví dụ |
 |---|---|---|
+| tiền tố | `sb` = Star Battle · `lu` = Light Up | `sb` |
 | `cạnh` | `5x5`, `6x6`, `7x7`, `8x8`, `10x10`, `14x14` | `10x10` |
 | `loại` | `easy` · `normal` · `hard` · `shapeless` | `normal` |
 | `số` | `01`, `02`, … đánh từ 1; `sample` cho đề mẫu | `02` |
 
-Ví dụ: `star_battle/10x10-normal-01.txt`, `light_up/14x14-normal-02.txt`, `star_battle/6x6-shapeless-sample.txt`.
+Ví dụ: `sb-10x10-normal-01.txt`, `lu-14x14-hard-02.txt`, `sb-6x6-shapeless-sample.txt`.
 
 Số sao **không** ghi vào tên — suy ra từ cỡ (5×5/6×6/8×8 → 1★, 10×10 → 2★, 14×14 → 3★).
 
@@ -110,7 +109,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Viec-1"))
 import core
 
-problem = core.load("Viec-1/inputs/light_up/7x7-normal-01.txt")
+problem = core.load("Viec-1/inputs/lu-7x7-normal-01.txt")
 print(type(problem).__name__)        # LightUp
 print(core.check(problem, nuggets))   # [] nghĩa là lời giải hợp lệ
 ```
@@ -150,28 +149,38 @@ Quy ước chung cho mọi thuật toán (V2, V3, V4 cùng đọc):
 | `generated`, `frontier_peak`: số node đã sinh, đỉnh của OPEN | nên có |
 | `steps`: log từng bước để dựng demo | ✅ |
 
-## 5. Trạng thái
+## 5. Bộ input
+
+Toàn bộ lấy từ trang chính thức, mỗi dòng là `?size=<n>` trên site tương ứng.
+
+| Bài | Cỡ / số sao | easy | normal | hard |
+|---|---|---|---|---|
+| Star Battle | 5×5 / 1★ | — | 2 | — |
+| Star Battle | 6×6 / 1★ | — | 2 | 2 |
+| Star Battle | 8×8 / 1★ | — | 2 | 2 |
+| Star Battle | 10×10 / 2★ | — | 2 | 2 |
+| Star Battle | 14×14 / 3★ | — | 2 | 2 |
+| Light Up | 7×7 | 2 | 2 | 2 |
+| Light Up | 10×10 | 2 | 2 | 2 |
+| Light Up | 14×14 | 2 | 2 | 2 |
+
+Site không có bản Star Battle Easy, nên cột đó để trống.
+
+Nguồn (tham số `size` của site):
+
+| Bài | easy | normal | hard |
+|---|---|---|---|
+| Star Battle | — | 0 → 5×5, 1 → 6×6, 3 → 8×8, 5 → 10×10, 7 → 14×14 | 2 → 6×6, 4 → 8×8, 6 → 10×10, 8 → 14×14 |
+| Light Up | 0 → 7×7, 3 → 10×10, 6 → 14×14 | 1 → 7×7, 4 → 10×10, 7 → 14×14 | 2 → 7×7, 5 → 10×10, 8 → 14×14 |
+
+Đề mẫu (có `.sol.txt` để tự kiểm): `sb-5x5-normal-sample`, `sb-6x6-shapeless-sample`, `lu-7x7-normal-sample`.
 
 - [x] `core.py` nạp đề + kiểm lời giải, chạy được
-- [x] 3 puzzle mẫu kèm lời giải: 5×5, 6×6 Shapeless, Light Up 7×7
 - [x] Định dạng input thống nhất cho cả 2 bài, kể cả Shapeless
 - [x] Hợp đồng `core.register` / `core.solve` cho 4 thuật toán
 - [x] Quy ước đặt tên thống nhất (mục 0)
-- [x] Bộ input chính thức: 2 đề mỗi cỡ
-
-| Bài | Cỡ | Số đề | Ghi chú |
-|---|---|---|---|
-| Star Battle | 5×5 / 1★ | 2 | Normal |
-| Star Battle | 6×6 / 1★ | 2 | Normal |
-| Star Battle | 8×8 / 1★ | 2 | Normal |
-| Star Battle | 10×10 / 2★ | 2 | Normal |
-| Star Battle | 6×6 / 1★ Shapeless | 1 | chỉ là mẫu |
-| Light Up | 7×7 | 2 | Normal |
-| Light Up | 10×10 | 2 | Normal |
-| Light Up | 14×14 | 2 | Normal |
-
-- [ ] Mỗi cỡ 3 đề (hiện 2) — thêm khi cần cho bảng số liệu dày hơn
-- [ ] Bổ sung Shapeless 8×8 và 10×10 nếu báo cáo cần
+- [x] 36 đề chính thức, phủ easy/normal/hard
+- [ ] Shapeless 8×8 và 10×10 nếu báo cáo cần
 
 > [!warning] Phát hành input là chốt hạ
 > V2 và V3 phải chạy **đúng bộ file này**. Thêm/bớt/đổi tên file sau 22/10 là cả hai phải chạy lại từ đầu.
