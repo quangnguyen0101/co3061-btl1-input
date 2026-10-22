@@ -131,6 +131,19 @@ Thuộc tính hữu ích:
 - `StarBattle`: `size`, `stars`, `regions`, `walls`, `shapeless`, `region_count`, `is_cell(r, c)`, `cells()`
 - `LightUp`: `rows`, `cols`, `grid`, `is_black(r, c)`, `clue(r, c)` (trả `None` nếu không phải ô số)
 
+### Vẽ hình (dùng cho báo cáo)
+
+`viz.py` vẽ đề ra ảnh, tự động vẽ luôn lời giải nếu có file `.sol.txt` cạnh đó. Cần `matplotlib` — chỉ script này cần, `core.py` vẫn chạy không thư viện.
+
+```bash
+python3 viz.py inputs/star_battle/sb-5x5-normal-sample.txt   # -> figs/sb-5x5-normal-sample.png
+python3 viz.py inputs/light_up/lu-7x7-normal-01.txt -o hinh.png --dpi 300
+python3 viz.py inputs/star_battle -o figs        # vẽ cả thư mục, tự tìm .sol.txt
+python3 viz.py inputs/light_up -o hinh.svg                  # SVG/PDF cũng được
+```
+
+Star Battle tô màu từng vùng; bản Shapeless tô ô tường đen. Light Up tô ô đen, in số gợi ý màu trắng, bóng đèn màu vàng.
+
 ## 4. Thêm thuật toán
 
 ```python
